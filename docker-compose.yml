@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:6.2
+    container_name: product-view-tracking-service-redis
+    ports:
+      - "6380:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+
+  mongo:
+    image: mongo:latest
+    container_name: product-view-tracking-service-mongo
+    ports:
+      - "27017:27017"
+
+volumes:
+  redis-data:
+    driver: local

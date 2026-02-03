@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: product-view-tracking-service
+
+  redis:
+    host: product-view-tracking-service-redis
+    port: 6380
+    password: ${REDIS_PASSWORD:}
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: 5000
+        min-idle: 1
+        max-idle: 5
+    product-view:
+      ttl: 10m
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/product-view-tracking-db
+      database: product-view-tracking-db
+      authentication-database: admin
+
+server:
+  port: 8081
