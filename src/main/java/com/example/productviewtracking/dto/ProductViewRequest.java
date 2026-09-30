@@ -1,4 +1,9 @@
 package com.example.productviewtracking.dto;
 
-public record ProductViewRequest(String productId, String userId) {
+import jakarta.validation.constraints.NotBlank;
+
+public record ProductViewRequest(
+        @NotBlank String productId,
+        String userId
+) {
 }

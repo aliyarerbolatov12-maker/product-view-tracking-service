@@ -5,6 +5,7 @@ import com.example.productviewtracking.dto.TopProductResponse;
 import com.example.productviewtracking.dto.ViewCountResponse;
 import com.example.productviewtracking.model.ProductViewEvent;
 import com.example.productviewtracking.service.ProductViewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,7 @@ public class ProductViewController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Void> recordView(@RequestBody ProductViewRequest request) {
-        if (request.productId() == null || request.productId().isBlank()) {
-            return Mono.error(new IllegalArgumentException("productId is empty"));
-        }
+    public Mono<Void> recordView(@Valid @RequestBody ProductViewRequest request) {
         return service.recordView(request.productId(), request.userId());
     }
 
@@ -38,7 +36,9 @@ public class ProductViewController {
     }
 
     @GetMapping("/user/{userId}")
-    public Flux<ProductViewEvent> userHistory(@PathVariable String userId) {
-        return service.getUserHistory(userId);
+    public Flux<ProductViewEvent> userHistory(
+            @PathVariable String userId,
+            @RequestParam(defaultValue = "50") int limit) {
+        return service.getUserHistory(userId, limit);
     }
 }
